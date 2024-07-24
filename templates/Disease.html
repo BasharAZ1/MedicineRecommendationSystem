@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='Disease.css') }}">
 </head>
 <body>
+    <div class="sidebar">
+        <button onclick="window.location.href='/'">Home</button>
+    </div>
     <div class="container">
         <div class="box">
             <h2>Predicted Disease</h2>
@@ -21,10 +24,53 @@
             <h2>Details</h2>
             <div class="details-section">
                 <h3>Description</h3>
-                <ul id="description-list">
-                    {% for desc in description %}
-                    <li>{{ desc }}</li>
+                <p id="description">{{ description }}</p>
+            </div>
+            <div class="details-row">
+                <div class="details-section">
+                    <h3>Symptoms</h3>
+                    <ul id="symptoms-list">
+                        {% for symptom in symptoms %}
+                        <li>{{ symptom }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="details-section">
+                    <h3>Medications</h3>
+                    <ul id="medications-list">
+                        {% for medication in medications %}
+                        <li>{{ medication }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="details-row">
+                <div class="details-section">
+                    <h3>Diet</h3>
+                    <ul id="diet-list">
+                        {% for item in diet %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="details-section">
+                    <h3>Precautions</h3>
+                    <ul id="precautions-list">
+                        {% for precaution in precautions %}
+                        <li>{{ precaution }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="details-section">
+                <h3>Workout</h3>
+                <ul id="workout-list">
+                    {% for item in workout %}
+                    <li>{{ item }}</li>
                     {% endfor %}
                 </ul>
             </div>
-            <div class="details-section">
+        </div>
+    </div>
+</body>
+</html>

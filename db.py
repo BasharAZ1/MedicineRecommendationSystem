@@ -3,6 +3,7 @@ from models import User
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
+import pandas as pd
 
 load_dotenv()
 
@@ -18,10 +19,18 @@ users_collection = userdb['users']
 medications_collection = userdb['medications']
 diets_collection = userdb['diets']
 workout_collection = userdb['workout']
+precautions_collection = userdb['precautions']
+Description_collection = userdb['Description']
+def upload_csv_to_mongodb(collection, csv_file):
+
+    df = pd.read_csv(csv_file)
+    data = df.to_dict(orient='records')
+    collection.insert_many(data)
 
 
-
-
+    #upload_csv_to_mongodb(medications_collection, 'data/medications.csv')
+    #upload_csv_to_mongodb(diets_collection, 'data/diets.csv')
+    #upload_csv_to_mongodb(workout_collection, 'data/workout_df.csv')
 
 def add_user(user):
     user_data = {
@@ -32,6 +41,37 @@ def add_user(user):
     result = users_collection.insert_one(user_data)
     user.set_id(result.inserted_id)
 
+
+def get_medications_by_disease(disease):
+    medications = medications_collection.find({"Disease": disease})
+    return [medication.get('Medication') for medication in medications]
+
+
+def get_diets_by_disease(disease):
+    diets = diets_collection.find({"Disease": disease})
+    return [diet.get('Diet') for diet in diets]
+
+
+
+def get_workout_df_by_disease(disease):
+    workouts = workout_collection.find({"disease": disease})
+    return [workout.get('workout') for workout in workouts]
+
+
+
+def get_precautions_by_disease(disease):
+    result = precautions_collection.find_one({"Disease": disease})
+    if result:
+        return [result.get('Precaution_1'), result.get('Precaution_2'), result.get('Precaution_3'), result.get('Precaution_4')]
+    else:
+        return None
+    
+def get_description_by_disease(disease):
+    result = Description_collection.find_one({"Disease": disease})
+    if result:
+        return result.get("Description")
+    else:
+        return "Not found"
 
 
 
