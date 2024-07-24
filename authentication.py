@@ -21,11 +21,10 @@ def login():
             user = user_from_dict(user_dict)
 
             session['username'] = user.username
-            session['phone'] = user.phone
             session['user_id'] = str(user._id)
             session['is_logged_in'] = True
             login_user(user)
-            return redirect(url_for('recipient', user_id=user._id))
+            return redirect(url_for('symptoms', user_id=user._id))
         else:
             flash('שם משתמש או סיסמה שגויים')
             return render_template('login.html', username=username)

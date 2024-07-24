@@ -50,11 +50,9 @@ def check_user_password(username, password):
 def user_from_dict(user_dict):
     user = User(
         username=user_dict['username'],
-        phone=user_dict['phone'],
         password=user_dict['password_hash'],
     )
     user.set_id(user_dict['_id'])
-    user.is_available = user_dict['is_available']
     user.services = user_dict['services']
     return user
 
