@@ -1,4 +1,4 @@
-/* styles.css */
+
 
 * {
     margin: 0;
@@ -30,6 +30,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
     color: #fff;
+    margin-top: 50px;
 }
 
 .box {
@@ -52,6 +53,7 @@ body {
     border-collapse: collapse;
     color: #fff;
     margin-bottom: 20px;
+    margin-top: 50px;
 }
 
 .table-container th, .table-container td {
@@ -105,4 +107,30 @@ button:hover {
 
 #symptom-list li:hover {
     background: rgba(255, 255, 255, 0.3);
+}
+.suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
 }

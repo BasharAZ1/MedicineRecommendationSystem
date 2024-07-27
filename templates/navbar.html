@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <title>Navbar</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('homepage') }}">Home</a></li>
+            <li><a href="{{ url_for('medicine') }}">Medicine</a></li>
+            <li><a href="{{ url_for('symptoms') }}">Diseases</a></li>
+            <li>
+                <a href="{{ url_for('homepage') }}">
+                    <img src="{{ url_for('static', filename='images/chest_icon.svg.png') }}" alt="Lung Info" style="height: 40px; width: 50px;">
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('homepage') }}">
+                    <img src="{{ url_for('static', filename='images/brain.png') }}" alt="Lung Info" style="height: 40px; width: 50px;">
+                </a>
+            </li>
+            <li class="navbar-search-container">
+                <input type="text" id="navbar-search" placeholder="Enter medicine name">
+                <div id="navbar-suggestions" class="suggestions"></div>
+            </li>
+        </ul>
+    </nav>
+
+    <script>
+        document.getElementById('navbar-search').addEventListener('input', function() {
+            const query = this.value;
+            if (query.length > 1) {
+                fetch(`/search?query=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const suggestionsDiv = document.getElementById('navbar-suggestions');
+                        suggestionsDiv.innerHTML = '';
+                        data.suggestions.forEach(suggestion => {
+                            const div = document.createElement('div');
+                            div.className = 'suggestion';
+                            div.innerText = suggestion.name;
+                            div.addEventListener('click', () => {
+                                document.getElementById('navbar-search').value = suggestion.name;
+                                fetch(`/get_medicine_info?id=${suggestion.id}`)
+                                    .then(response => response.json())
+                                    .then(info => {
+                                        const newWindow = window.open('', '_blank', 'width=400,height=400');
+                                        newWindow.document.write(`
+                                            <h2>${info.name}</h2>
+                                            <p>Side Effects: ${info.side_effects.join(', ')}</p>
+                                            <p>Interactions: ${info.interactions.join(', ')}</p>
+                                            <p>Substitute Drugs: ${info.substitutes.join(', ')}</p>
+                                        `);
+                                    });
+                            });
+                            suggestionsDiv.appendChild(div);
+                        });
+                    });
+            } else {
+                document.getElementById('navbar-suggestions').innerHTML = '';
+            }
+        });
+    </script>
+</body>
+</html>

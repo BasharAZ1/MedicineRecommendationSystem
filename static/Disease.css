@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +9,7 @@
 body {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; 
     height: 100vh;
     background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
@@ -27,6 +28,7 @@ body {
     gap: 20px;
     width: 90%;
     max-width: 1000px;
+    margin-top: 100px; 
 }
 
 .box, .table-container {
@@ -40,7 +42,7 @@ body {
 }
 
 .box h2, .table-container h2 {
-    margin-bottom: 20px;
+    margin-bottom: 80px;
     text-align: center;
 }
 
@@ -104,3 +106,71 @@ button:hover {
     background: #039be5;
     transform: scale(1.05);
 }
+
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+
+nav {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    display: block;
+    color: #fff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #03a9f4;
+}
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+}
+

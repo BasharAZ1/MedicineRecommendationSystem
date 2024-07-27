@@ -1,9 +1,10 @@
 from flask import render_template, request, redirect, url_for, jsonify
-from db import  get_medications_by_disease,get_diets_by_disease,get_workout_df_by_disease,upload_csv_to_mongodb,precautions_collection,Description_collection,get_precautions_by_disease,get_description_by_disease
+from db import  get_medications_by_disease,get_diets_by_disease,get_workout_df_by_disease,get_precautions_by_disease,get_description_by_disease,medications_info_collection
 import numpy as np
 import pickle
 from flask_login import login_required
 from bson.objectid import ObjectId
+import pandas as pd
 
 with open('models/svc_model.pkl', 'rb') as file:
     model = pickle.load(file)
@@ -17,9 +18,7 @@ diseases_list = {
         36: 'Tuberculosis', 10: 'Common Cold', 34: 'Pneumonia', 13: 'Dimorphic hemmorhoids(piles)', 18: 'Heart attack'
     }
 
-def homepage():
-    upload_csv_to_mongodb(precautions_collection, 'data/precautions_df.csv')
-    upload_csv_to_mongodb(Description_collection, 'data/description.csv')
+def homepage(): 
     return render_template('login.html')
 
 
@@ -48,16 +47,9 @@ def submit_symptoms():
                                diet=diets, workout=workout)
     
     
-
-
-
 def predict_disease(symptoms):
-
-
-    num_features = 87  
+    num_features = 132
     feature_vector = [0] * num_features
-
-    # Encode symptoms in the feature vector
     for symptom in symptoms:
         if symptom in symptoms_dict:
             feature_vector[symptoms_dict[symptom]] = 1  
@@ -69,3 +61,75 @@ def predict_disease(symptoms):
         x_disease = (x[0])  
 
     return x_disease, x[0]
+
+
+def searchmedicine():
+    return render_template('medicnices.html')
+
+
+def search():
+    query = request.args.get('query').lower()
+    suggestions = df['Drug name'][df['Drug name'].str.lower().str.contains(query)].head(5).tolist()
+    return jsonify({'suggestions': suggestions})
+
+def get_medicine_info():
+    name = request.args.get('name')
+    medicine = df[df['Drug name'] == name].iloc[0]
+    info = {
+        'name': medicine['Drug name'],
+        'drug_class': medicine['Drug class'],
+        'side_effects': [medicine[f'Side Effect {i+1}'] for i in range(41) if not pd.isna(medicine[f'Side Effect {i+1}'])],
+        'interactions': medicine['Drug interactions'].split(', '),
+        'substitutes': [medicine[f'Substitute {i+1}'] for i in range(5) if not pd.isna(medicine[f'Substitute {i+1}'])],
+        'active_ingredients': medicine['Active ingredients'].split(', ')
+    }
+    return jsonify(info)
+
+def medicine():
+    if request.method == 'POST':
+        pass 
+    return render_template('medicine.html')
+    
+    
+def search():
+    query = request.args.get('query', '')
+    if not query:
+        return jsonify(suggestions=[])
+
+    # Search in the name and substitute fields
+    search_criteria = {
+        '$or': [
+            {'name': {'$regex': query, '$options': 'i'}},
+            {'substitute0': {'$regex': query, '$options': 'i'}},
+            {'substitute1': {'$regex': query, '$options': 'i'}},
+            {'substitute2': {'$regex': query, '$options': 'i'}},
+            {'substitute3': {'$regex': query, '$options': 'i'}},
+            {'substitute4': {'$regex': query, '$options': 'i'}}
+        ]
+    }
+
+    suggestions = medications_info_collection.find(search_criteria, {'name': 1})
+    suggestions_list = [{'name': s['name'], 'id': str(s['_id'])} for s in suggestions]
+    return jsonify(suggestions=suggestions_list)
+
+
+def get_medicine_info():
+    med_id = request.args.get('id', '')
+    medicine_info = medications_info_collection.find_one({'_id': ObjectId(med_id)})
+    if medicine_info:
+        # Collect all side effects into a list and filter out None and nan values
+        side_effects = [
+            medicine_info.get(f'sideEffect{i}') for i in range(36) 
+            if medicine_info.get(f'sideEffect{i}') and not pd.isna(medicine_info.get(f'sideEffect{i}'))
+        ]
+
+        info = {
+            "name": medicine_info.get('name'),
+            "side_effects": side_effects,
+            "interactions": medicine_info.get('interactions', []),
+            "substitutes": [medicine_info.get(f'substitute{i}', 'N/A') for i in range(5)],
+        }
+        print(info)
+        return jsonify(info)
+    else:
+        return jsonify({"error": "Medicine not found"}), 404

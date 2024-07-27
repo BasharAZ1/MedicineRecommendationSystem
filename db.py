@@ -21,17 +21,33 @@ diets_collection = userdb['diets']
 workout_collection = userdb['workout']
 precautions_collection = userdb['precautions']
 Description_collection = userdb['Description']
+medications_info_collection=userdb['medications_info']
+
+
+
+
+
+def split_csv(file_path, chunk_size):
+    if not os.path.exists('chunks'):
+        os.makedirs('chunks')
+    for i, chunk in enumerate(pd.read_csv(file_path, chunksize=chunk_size)):
+        chunk.to_csv(f'chunks/chunk_{i}.csv', index=False)
+
+
 def upload_csv_to_mongodb(collection, csv_file):
 
     df = pd.read_csv(csv_file)
     data = df.to_dict(orient='records')
     collection.insert_many(data)
-
-
-    #upload_csv_to_mongodb(medications_collection, 'data/medications.csv')
-    #upload_csv_to_mongodb(diets_collection, 'data/diets.csv')
-    #upload_csv_to_mongodb(workout_collection, 'data/workout_df.csv')
-
+    
+    
+    
+def upload_chunks(file_path, chunk_size, collection):
+    split_csv(file_path, chunk_size)
+    chunk_files = [f'chunks/{f}' for f in os.listdir('chunks') if f.endswith('.csv')]
+    for chunk_file in chunk_files:
+        upload_csv_to_mongodb(collection, chunk_file)
+        print(f"Uploaded {chunk_file} to MongoDB")
 def add_user(user):
     user_data = {
         "username": user.username,

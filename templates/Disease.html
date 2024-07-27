@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='Disease.css') }}">
 </head>
 <body>
+    <div id="navbar">
+        {% include 'navbar.html' %}
+    </div>
     <div class="sidebar">
         <button onclick="window.location.href='/'">Home</button>
     </div>
@@ -16,12 +19,10 @@
             <div class="prediction-details">
                 <h3>Predicted disease:</h3>
                 <p id="predicted-disease">{{ predicted_disease }}</p>
-                <h3>Predicted disease code:</h3>
-                <p id="predicted-disease-code">{{ predicted_disease_code }}</p>
             </div>
         </div>
         <div class="table-container">
-            <h2>Details</h2>
+            <h2 id="bashar">Details</h2>
             <div class="details-section">
                 <h3>Description</h3>
                 <p id="description">{{ description }}</p>
