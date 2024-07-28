@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chest X-Rays</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lung.css') }}">
+</head>
+<body>
+    <div id="navbar">
+        {% include 'navbar.html' %}
+    </div>
+
+    <div class="container">
+        <h1>Chest X-Rays</h1>
+        <input type="file" id="fileInput" accept="image/*">
+        <div id="imageDisplay"></div>
+        <button id="predictButton">Predict</button>
+        <div id="predictionResult"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('fileInput');
+            const imageDisplay = document.getElementById('imageDisplay');
+            const predictButton = document.getElementById('predictButton');
+            const predictionResult = document.getElementById('predictionResult');
+            let selectedFile;
+
+            fileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100%';
+                        img.style.height = 'auto';
+                        imageDisplay.innerHTML = '';
+                        imageDisplay.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                    selectedFile = file;
+                }
+            });
+
+            predictButton.addEventListener('click', () => {
+                if (selectedFile) {
+                    const formData = new FormData();
+                    formData.append('file', selectedFile);
+
+                    fetch('/lung_page', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data here
+                        predictionResult.innerText = 'Prediction: ' + data.prediction;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    });
+                } else {
+                    alert('Please upload an image first.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

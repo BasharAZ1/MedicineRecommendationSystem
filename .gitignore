@@ -6,3 +6,4 @@ migrations/
 env
 .env
 Dockerfile
+test_model.py

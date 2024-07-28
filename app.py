@@ -15,7 +15,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'  # Redirect to the login view if not authenticated
 login_manager.login_message = "צריכים להיות מחוברים כדי לגשת לדף זה"
-
 @login_manager.user_loader
 def load_user(user_id):
     user_data = users_collection.find_one({"_id": ObjectId(user_id)})
