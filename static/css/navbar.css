@@ -1,0 +1,90 @@
+/* Suggestions styles */
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+.suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: calc(100% - 20px);
+    top: 100%; /* Ensure suggestions appear below the search input */
+    left: 0; /* Align with the left edge of the input */
+}
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+.suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+/* Navbar styles */
+nav {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+    position: relative; /* Added position relative */
+}
+
+nav ul li a {
+    display: block;
+    color: #fff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #03a9f4;
+}
+
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+}
+
+nav ul li a img {
+    height: 30px;
+    width: 50px;
+    transition: background 0.3s ease;
+}
+
+nav ul li a img:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-search-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    position: relative; /* Ensure it positions the suggestions correctly */
+}

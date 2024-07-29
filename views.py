@@ -9,7 +9,6 @@ from werkzeug.utils import secure_filename
 import os
 
 
-
 image_size = 150
 with open('models/svc_model.pkl', 'rb') as file:
     model = pickle.load(file)
@@ -25,10 +24,11 @@ diseases_list = {
         36: 'Tuberculosis', 10: 'Common Cold', 34: 'Pneumonia', 13: 'Dimorphic hemmorhoids(piles)', 18: 'Heart attack'
     }
 
+@login_required
 def homepage(): 
-    return render_template('login.html')
+    return render_template('index.html')
 
-
+@login_required
 def symptoms():
     if request.method == 'POST':
         selected_symptoms = request.form.getlist('symptoms')
@@ -36,7 +36,7 @@ def symptoms():
     symptoms_list=list(symptoms_dict.keys())
     return render_template('symptoms.html', symptoms=symptoms_list)
 
-
+@login_required
 def submit_symptoms():
     if request.method == 'POST':
         selected_symptoms = request.form.getlist('symptoms')
@@ -53,7 +53,7 @@ def submit_symptoms():
                                symptoms=selected_symptoms, medications=medactions, precautions=precautions,
                                diet=diets, workout=workout)
     
-    
+@login_required   
 def predict_disease(symptoms):
     num_features = 132
     feature_vector = [0] * num_features
@@ -69,11 +69,11 @@ def predict_disease(symptoms):
 
     return x_disease, x[0]
 
-
+@login_required
 def searchmedicine():
     return render_template('medicnices.html')
 
-
+@login_required
 def search():
     query = request.args.get('query', '')
     if not query:
@@ -89,14 +89,14 @@ def search():
     suggestions_list = [{'name': s['name'], 'id': str(s['_id'])} for s in suggestions]
     return jsonify(suggestions=suggestions_list)
 
-
+@login_required
 def medicine():
     if request.method == 'POST':
         pass 
     return render_template('medicine.html')
     
     
-
+@login_required
 def get_medicine_info():
     med_name = request.args.get('name', '')
     medicine_info = medications_info_collection.find_one({'name': med_name})

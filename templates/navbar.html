@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     <title>Navbar</title>
 </head>
 <body>
@@ -13,15 +13,21 @@
             <li><a href="{{ url_for('medicine') }}">Medicine</a></li>
             <li><a href="{{ url_for('symptoms') }}">Diseases</a></li>
             <li>
+                <a href="{{ url_for('bones_page') }}">
+                    <img src="{{ url_for('static', filename='images/Bones.png') }}" alt="Bones Info" style="height: 50px; width: 60px;">
+                </a>
+            </li>
+            <li>
                 <a href="{{ url_for('lung_page') }}">
-                    <img src="{{ url_for('static', filename='images/chest_icon.svg.png') }}" alt="Lung Info" style="height: 40px; width: 50px;">
+                    <img src="{{ url_for('static', filename='images/chest_icon.svg.png') }}" alt="Lung Info" style="height: 40px; width: 60px;">
                 </a>
             </li>
             <li>
                 <a href="{{ url_for('homepage') }}">
-                    <img src="{{ url_for('static', filename='images/brain.png') }}" alt="Lung Info" style="height: 40px; width: 50px;">
+                    <img src="{{ url_for('static', filename='images/brain.png') }}" alt="Lung Info" style="height: 40px; width: 60px;">
                 </a>
             </li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
             <li class="navbar-search-container">
                 <input type="text" id="navbar-search" placeholder="Enter medicine name">
                 <div id="navbar-suggestions" class="suggestions"></div>
