@@ -7,3 +7,5 @@ env
 .env
 Dockerfile
 test_model.py
+script.py
+upload_new.py

@@ -1,7 +1,7 @@
 # import requests
 
 # # OpenFDA API endpoint for drug names
-# url = "https://api.fda.gov/drug/label.json"
+# url = "https://api.fda.gov/drug/"
 
 # # Parameters to fetch a list of drug names
 # params = {
@@ -35,22 +35,42 @@
 #     print(len(drug_names))  # Print the first 100 drug names for simplicity
 # else:
 #     print(f"Error: {response.status_code}")
+# import requests
+
+# # NHS API endpoint for medicines
+# url = "https://api.nhs.uk/medicines/acamol"
+
+# # Headers for the request including the API key
+# headers = {
+#     "subscription-key": "YOUR_API_KEY"  # Replace with your NHS API key
+# }
+
+# # Sending the GET request to the API
+# response = requests.get(url, headers=headers)
+
+# # Check if the request was successful
+# if response.status_code == 200:
+#     data = response.json()
+#     print(data)
+# else:
+#     print(f"Error: {response.status_code}")
 import requests
+from bs4 import BeautifulSoup
 
-# NHS API endpoint for medicines
-url = "https://api.nhs.uk/medicines/acamol"
+# URL of the Israeli Drug Registry page
+url = "https://israeldrugs.health.gov.il/#!/byDrug"
 
-# Headers for the request including the API key
-headers = {
-    "subscription-key": "YOUR_API_KEY"  # Replace with your NHS API key
-}
+# Make a request to the webpage
+response = requests.get(url)
 
-# Sending the GET request to the API
-response = requests.get(url, headers=headers)
+# Parse the HTML content of the page
+soup = BeautifulSoup(response.content, 'html.parser')
 
-# Check if the request was successful
-if response.status_code == 200:
-    data = response.json()
-    print(data)
-else:
-    print(f"Error: {response.status_code}")
+# Example: Extract drug names
+drug_names = []
+for drug in soup.find_all('div', class_='drug-name'):
+    drug_names.append(drug.text.strip())
+
+# Print the drug names
+for name in drug_names:
+    print(name)

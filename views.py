@@ -75,43 +75,13 @@ def searchmedicine():
 
 
 def search():
-    query = request.args.get('query').lower()
-    suggestions = df['Drug name'][df['Drug name'].str.lower().str.contains(query)].head(5).tolist()
-    return jsonify({'suggestions': suggestions})
-
-def get_medicine_info():
-    name = request.args.get('name')
-    medicine = df[df['Drug name'] == name].iloc[0]
-    info = {
-        'name': medicine['Drug name'],
-        'drug_class': medicine['Drug class'],
-        'side_effects': [medicine[f'Side Effect {i+1}'] for i in range(41) if not pd.isna(medicine[f'Side Effect {i+1}'])],
-        'interactions': medicine['Drug interactions'].split(', '),
-        'substitutes': [medicine[f'Substitute {i+1}'] for i in range(5) if not pd.isna(medicine[f'Substitute {i+1}'])],
-        'active_ingredients': medicine['Active ingredients'].split(', ')
-    }
-    return jsonify(info)
-
-def medicine():
-    if request.method == 'POST':
-        pass 
-    return render_template('medicine.html')
-    
-    
-def search():
     query = request.args.get('query', '')
     if not query:
         return jsonify(suggestions=[])
-
-    # Search in the name and substitute fields
     search_criteria = {
         '$or': [
             {'name': {'$regex': query, '$options': 'i'}},
-            {'substitute0': {'$regex': query, '$options': 'i'}},
-            {'substitute1': {'$regex': query, '$options': 'i'}},
-            {'substitute2': {'$regex': query, '$options': 'i'}},
-            {'substitute3': {'$regex': query, '$options': 'i'}},
-            {'substitute4': {'$regex': query, '$options': 'i'}}
+            {'substitutes': {'$regex': query, '$options': 'i'}}
         ]
     }
 
@@ -120,23 +90,28 @@ def search():
     return jsonify(suggestions=suggestions_list)
 
 
-def get_medicine_info():
-    med_id = request.args.get('id', '')
-    medicine_info = medications_info_collection.find_one({'_id': ObjectId(med_id)})
-    if medicine_info:
-        # Collect all side effects into a list and filter out None and nan values
-        side_effects = [
-            medicine_info.get(f'sideEffect{i}') for i in range(36) 
-            if medicine_info.get(f'sideEffect{i}') and not pd.isna(medicine_info.get(f'sideEffect{i}'))
-        ]
+def medicine():
+    if request.method == 'POST':
+        pass 
+    return render_template('medicine.html')
+    
+    
 
+def get_medicine_info():
+    med_name = request.args.get('name', '')
+    medicine_info = medications_info_collection.find_one({'name': med_name})
+    if medicine_info:
         info = {
-            "name": medicine_info.get('name'),
-            "side_effects": side_effects,
-            "interactions": medicine_info.get('interactions', []),
-            "substitutes": [medicine_info.get(f'substitute{i}', 'N/A') for i in range(5)],
+            'name': medicine_info.get('name'),
+            'chemical_class': medicine_info.get('chemicalclass'),
+            'habit_forming': medicine_info.get('habitforming'),
+            'therapeutic_class': medicine_info.get('therapeuticclass'),
+            'action_class': medicine_info.get('actionclass'),
+            'substitutes': medicine_info.get('substitutes', []),
+            'side_effects': medicine_info.get('sideEffects', []),
+            'uses': medicine_info.get('uses', [])
         }
-        print(info)
+
         return jsonify(info)
     else:
         return jsonify({"error": "Medicine not found"}), 404
