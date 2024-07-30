@@ -10,30 +10,35 @@
     <div id="navbar">
         {% include 'navbar.html' %}
     </div>
+    <div class="title-container">
+        <h1 class="title"><span class="dark-blue">Kal</span> <span class="white">Medi</span></h1>
+    </div>
     <div class="container">
-        <div class="box">
-            <h2>Select Symptoms</h2>
-            <div class="search-box">
-                <input type="text" id="symptom-search" placeholder="Search for symptoms...">
-                <ul id="symptom-list"></ul>
+        <div class="row">
+            <div class="box">
+                <h2>Select Symptoms</h2>
+                <div class="search-box">
+                    <input type="text" id="symptom-search" placeholder="Search for symptoms...">
+                    <ul id="symptom-list"></ul>
+                </div>
             </div>
-        </div>
-        <div class="table-container">
-            <h2>Selected Symptoms</h2>
-            <table id="selected-symptoms-table">
-                <thead>
-                    <tr>
-                        <th>Symptom</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Selected symptoms will be added here -->
-                </tbody>
-            </table>
-            <form method="POST" id="symptom-form" action="/submit_symptoms">
-                <button type="submit">Submit</button>
-            </form>
+            <div class="table-container">
+                <h2>Selected Symptoms</h2>
+                <table id="selected-symptoms-table">
+                    <thead>
+                        <tr>
+                            <th>Symptom</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Selected symptoms will be added here -->
+                    </tbody>
+                </table>
+                <form method="POST" id="symptom-form" action="/submit_symptoms">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
 

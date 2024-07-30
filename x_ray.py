@@ -18,7 +18,7 @@ import cv2
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-model = tf.saved_model.load('/Users/basharalli/Desktop/Final_med/MedicineRecommendationSystem/models/lung/lung1')
+model = tf.saved_model.load('/Users/basharalli/Desktop/Final_med/MedicineRecommendationSystem/models/lung')
 
 labels = ['Bacterial Pneumonia', 'Corona Virus Disease', 'Normal', 'Tuberculosis', 'Viral Pneumonia']
 labels_fracture=['fractured', 'not fractured']
