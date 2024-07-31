@@ -4,6 +4,7 @@ import tensorflow as tf
 from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 import numpy as np
+from flask import render_template, request, redirect, flash, session, url_for
 import pickle
 from flask_login import login_required
 from bson.objectid import ObjectId
@@ -53,7 +54,7 @@ def lung_page():
             except Exception as e:
                 return jsonify({'error': str(e)}), 500
     
-    return render_template('lung_page.html')
+    return render_template('lung_page.html',username=session.get('username'))
 
 
 @login_required
@@ -85,4 +86,4 @@ def bones_page():
             except Exception as e:
                 return jsonify({'error': str(e)}), 500
     
-    return render_template('bones_page.html')
+    return render_template('bones_page.html',username=session.get('username'))

@@ -52,7 +52,7 @@ h1 {
     border-radius: 10px;
 }
 
-button {
+#predictButton {
     background: #1a73e8;
     border: none;
     padding: 10px 20px;
@@ -63,7 +63,7 @@ button {
     transition: background 0.3s ease, transform 0.3s ease;
 }
 
-button:hover {
+#predictButton:hover {
     background: #1669c1;
     transform: scale(1.05);
 }

@@ -14,6 +14,11 @@
                 <div class="bar"></div>
                 <div class="bar"></div>
             </div>
+            <div>
+                {% if session['is_logged_in'] %}
+                <div class="greeting">Hello Dr. {{ session['username'] }}</div>
+                {% endif %}
+            </div>
             <div class="navbar-search-container">
                 <input type="text" id="navbar-search" placeholder="Enter medicine name">
                 <button id="search-button">FDA Search</button>
