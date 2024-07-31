@@ -191,3 +191,68 @@ input[type="text"] {
     border-bottom: 1px solid #1a73e8;
     outline: none;
 }
+.details-section ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.details-section li {
+    margin: 5px 0; /* Add some space between list items */
+    word-wrap: break-word; /* Break long words */
+}
+
+
+.details-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+    margin-bottom: 20px;
+}
+
+.details-section {
+    flex: 1 1 45%; 
+    margin: 10px;
+}
+
+@media screen and (max-width: 768px) {
+    .details-section {
+        flex: 1 1 100%; 
+    }
+}
+/* General styles for the details sections */
+.details-section {
+    margin-bottom: 20px;
+}
+
+.details-section h3 {
+    margin-bottom: 10px;
+}
+
+.details-section ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.details-section li {
+    margin-bottom: 5px; /* Add space between list items */
+    word-wrap: break-word; /* Break long words */
+}
+
+/* Flexbox styles for rows containing multiple sections */
+.details-row {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping of items */
+    justify-content: space-between; /* Space out items */
+}
+
+.details-row .details-section {
+    flex: 1 1 45%; /* Allow sections to take up 45% width */
+    margin-bottom: 20px; /* Space between sections */
+}
+
+@media screen and (max-width: 768px) {
+    .details-row .details-section {
+        flex: 1 1 100%; /* Full width on smaller screens */
+    }
+}

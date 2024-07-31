@@ -50,6 +50,20 @@ nav {
     outline: none;
     color: #1a73e8;
     border-bottom: 1px solid #1a73e8;
+    margin-right: 10px; /* Add some space between input and button */
+}
+
+#search-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1a73e8;
+    color: #fff;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #1669c1;
 }
 
 .suggestions {

@@ -7,6 +7,8 @@ from bson.objectid import ObjectId
 import pandas as pd
 from werkzeug.utils import secure_filename
 import os
+import ast
+import requests
 
 
 image_size = 150
@@ -23,6 +25,17 @@ diseases_list = {
         19: 'Hepatitis B', 20: 'Hepatitis C', 21: 'Hepatitis D', 22: 'Hepatitis E', 3: 'Alcoholic hepatitis',
         36: 'Tuberculosis', 10: 'Common Cold', 34: 'Pneumonia', 13: 'Dimorphic hemmorhoids(piles)', 18: 'Heart attack'
     }
+
+def flatten(nested_list):
+    flat_list = []
+    for item in nested_list:
+        if isinstance(item, list):
+            flat_list.extend(flatten(item))
+        else:
+            flat_list.append(item)
+    return flat_list
+
+
 
 @login_required
 def homepage(): 
@@ -47,7 +60,11 @@ def submit_symptoms():
         workout=get_workout_df_by_disease(disease)
         precautions=get_precautions_by_disease(disease)
         Description=get_description_by_disease(disease)
-
+        diets = [ast.literal_eval(diet) for diet in diets]
+        medactions=[ast.literal_eval(medaction) for medaction in medactions]
+        diets = flatten(diets)
+        medactions=flatten(medactions)
+        
         return render_template('Disease.html', predicted_disease=disease, predicted_disease_code=prediction[1],
                                description=Description, 
                                symptoms=selected_symptoms, medications=medactions, precautions=precautions,
@@ -78,10 +95,10 @@ def search():
     query = request.args.get('query', '')
     if not query:
         return jsonify(suggestions=[])
+
     search_criteria = {
         '$or': [
-            {'name': {'$regex': query, '$options': 'i'}},
-            {'substitutes': {'$regex': query, '$options': 'i'}}
+            {'name': {'$regex': f'^{query}', '$options': 'i'}},
         ]
     }
 
@@ -96,17 +113,16 @@ def medicine():
     return render_template('medicine.html')
     
     
-@login_required
 def get_medicine_info():
     med_name = request.args.get('name', '')
     medicine_info = medications_info_collection.find_one({'name': med_name})
     if medicine_info:
         info = {
-            'name': medicine_info.get('name'),
-            'chemical_class': medicine_info.get('chemicalclass'),
-            'habit_forming': medicine_info.get('habitforming'),
-            'therapeutic_class': medicine_info.get('therapeuticclass'),
-            'action_class': medicine_info.get('actionclass'),
+            'name': medicine_info.get('name', 'N/A'),
+            'chemical_class': medicine_info.get('chemicalclass', 'N/A'),
+            'habit_forming': medicine_info.get('habitforming', 'N/A'),
+            'therapeutic_class': medicine_info.get('therapeuticclass', 'N/A'),
+            'action_class': medicine_info.get('actionclass', 'N/A'),
             'substitutes': medicine_info.get('substitutes', []),
             'side_effects': medicine_info.get('sideEffects', []),
             'uses': medicine_info.get('uses', [])
@@ -117,3 +133,45 @@ def get_medicine_info():
         return jsonify({"error": "Medicine not found"}), 404
     
     
+
+
+def get_drug_info(drug_name):
+    url = f"https://api.fda.gov/drug/label.json?search=openfda.brand_name:{drug_name}"
+    
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if 'results' in data:
+            return data['results'][0]
+        else:
+            return "No results found."
+    else:
+        return f"Error: {response.status_code}"
+
+def extract_important_info(drug_data):
+    important_info = {
+        "Brand Name": drug_data.get("openfda", {}).get("brand_name", ["N/A"])[0],
+        "Generic Name": drug_data.get("openfda", {}).get("generic_name", ["N/A"])[0],
+        "Manufacturer": drug_data.get("openfda", {}).get("manufacturer_name", ["N/A"])[0],
+        "Active Ingredients": drug_data.get("active_ingredient", ["N/A"]),
+        "Purpose": drug_data.get("purpose", ["N/A"]),
+        "Indications and Usage": drug_data.get("indications_and_usage", ["N/A"]),
+        "Warnings": drug_data.get("warnings", ["N/A"]),
+        "Dosage and Administration": drug_data.get("dosage_and_administration", ["N/A"]),
+        "Inactive Ingredients": drug_data.get("inactive_ingredient", ["N/A"])
+    }
+    return important_info
+
+def fda_search():
+    query = request.args.get('query', '')
+    if not query:
+        return jsonify({"error": "No query provided"}), 400
+    
+    drug_data = get_drug_info(query)
+    if isinstance(drug_data, dict):
+        important_info = extract_important_info(drug_data)
+        return jsonify(important_info)
+    else:
+        return jsonify({"error": drug_data}), 404
+
+

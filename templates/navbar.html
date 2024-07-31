@@ -16,6 +16,7 @@
             </div>
             <div class="navbar-search-container">
                 <input type="text" id="navbar-search" placeholder="Enter medicine name">
+                <button id="search-button">FDA Search</button>
                 <div id="navbar-suggestions" class="suggestions"></div>
             </div>
             <a href="{{ url_for('logout') }}" class="logout">Logout</a>
@@ -31,6 +32,31 @@
     <script>
         document.getElementById('burger-menu').addEventListener('click', function() {
             document.getElementById('nav-links').classList.toggle('active');
+        });
+
+        document.getElementById('search-button').addEventListener('click', function() {
+            var query = document.getElementById('navbar-search').value;
+            if (query) {
+                fetch('/FDA_search?query=' + query)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data here
+                        console.log(data);
+                        // Display suggestions if any
+                        var suggestions = data.suggestions || [];
+                        var suggestionsContainer = document.getElementById('navbar-suggestions');
+                        suggestionsContainer.innerHTML = '';
+                        suggestions.forEach(function(suggestion) {
+                            var suggestionElement = document.createElement('div');
+                            suggestionElement.className = 'suggestion';
+                            suggestionElement.textContent = suggestion.name;
+                            suggestionsContainer.appendChild(suggestionElement);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
         });
     </script>
     <script src="{{ url_for('static', filename='js/find_med.js') }}"></script>
