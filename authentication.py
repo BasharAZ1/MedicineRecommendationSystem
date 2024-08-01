@@ -1,18 +1,21 @@
 from db import add_user, find_user_by_username, check_user_password, users_collection, user_from_dict
 from flask_login import login_user, logout_user, login_required
-from flask import render_template, request, redirect, flash, session, url_for
+from flask import render_template, request, redirect, flash, session, url_for,get_flashed_messages
 from models import  User
 
 
 @login_required
 def logout():
+    get_flashed_messages()
     session.clear()
     logout_user()
-    return redirect(url_for('homepage'))
+    return redirect(url_for('login'))
 
 
 def login():
+    get_flashed_messages()
     if request.method == 'POST':
+        get_flashed_messages()
         username = request.form['username']
         password = request.form['password']
 
@@ -43,6 +46,7 @@ def is_password_legal(password):
 
 
 def register():
+    get_flashed_messages()
     if request.method == 'GET':
         return render_template('signup.html')
 
@@ -63,7 +67,7 @@ def register():
         add_user(new_user)
 
 
-        users_collection.update_one({"_id": new_user._id}, {"$set": {"services": new_user.services}})
+        users_collection.update_one({"_id": new_user._id})
 
         return redirect(url_for('homepage'))
 

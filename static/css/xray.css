@@ -89,3 +89,67 @@ h1 {
 .title .white {
     color: #ffffff;
 }
+
+
+#feedbackSection {
+    margin-top: 30px;
+    text-align: left;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    margin-bottom: 45px;
+}
+
+#feedbackSection h2 {
+    color: #1a73e8;
+    margin-bottom: 10px;
+}
+
+#feedbackSection label {
+    color: #1a73e8;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#feedbackLabel {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #1a73e8;
+    background: transparent;
+    border: 1px solid #1a73e8;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    outline: none;
+}
+
+#feedbackText {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #1a73e8;
+    background: transparent;
+    border: 1px solid #1a73e8;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    outline: none;
+    resize: none;
+}
+
+#submitFeedbackButton {
+    background: #1a73e8;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+#submitFeedbackButton:hover {
+    background: #1669c1;
+    transform: scale(1.05);
+}

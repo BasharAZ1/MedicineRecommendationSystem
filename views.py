@@ -83,7 +83,19 @@ def submit_symptoms():
                                symptoms=selected_symptoms, medications=medactions, precautions=precautions,
                                diet=diets, workout=workout)
     
-
+# @login_required   
+# def predict_disease(symptoms):
+#     num_features = 132
+#     feature_vector = [0] * num_features
+#     for symptom in symptoms:
+#         if symptom in symptoms_dict:
+#             feature_vector[symptoms_dict[symptom]] = 1  
+#     x = model.predict([feature_vector]) 
+#     if x[0] in diseases_dict:
+#         x_disease = diseases_dict[x[0]]
+#     else:
+#         x_disease = (x[0])  
+#     return x_disease, x[0]
 
 @login_required
 def predict_disease(symptoms):
