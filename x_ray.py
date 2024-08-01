@@ -3,6 +3,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.layers import TFSMLayer
 import numpy as np
+from keras.models import Sequential, load_model
 import csv
 from werkzeug.utils import secure_filename
 from flask_login import login_required
@@ -19,9 +20,9 @@ UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Load models using TFSMLayer for Keras 3 compatibility
-model_lung = TFSMLayer('/Users/basharalli/Desktop/Final_med/MedicineRecommendationSystem/models/lung', call_endpoint='serving_default')
-model_fracture = TFSMLayer('/Users/basharalli/Desktop/Final_med/MedicineRecommendationSystem/models/fracture/model', call_endpoint='serving_default')
-model_brain="""sumary_line"""
+model_lung = TFSMLayer('models/lung', call_endpoint='serving_default')
+model_fracture = TFSMLayer('models/fracture/model', call_endpoint='serving_default')
+model_brain = load_model('models/Brain/my_model.keras')
 
 labels = ['Bacterial Pneumonia', 'Corona Virus Disease', 'Normal', 'Tuberculosis', 'Viral Pneumonia']
 labels_fracture = ['fractured', 'not fractured']
@@ -71,7 +72,6 @@ def bones_page():
             file.save(file_path)
             
             try:
- 
                 img = load_img(file_path, target_size=(image_size, image_size))
                 img_array = img_to_array(img)
                 img_array = np.expand_dims(img_array, axis=0)
@@ -83,7 +83,7 @@ def bones_page():
             except Exception as e:
                 return jsonify({'error': str(e)}), 500
     
-    return render_template('xray.html', username=session.get('username'),h1_content='Bones Check',labels=labels_fracture)
+    return render_template('xray.html', username=session.get('username'),h1_content='Brain Check',labels=labels_fracture)
 
 
 @login_required
@@ -100,19 +100,19 @@ def brain_page():
             file.save(file_path)
             
             try:
- 
-                img = load_img(file_path, target_size=(image_size, image_size))
-                img_array = img_to_array(img)
-                img_array = np.expand_dims(img_array, axis=0)
-
-                y_pred_unseen = model_brain(img_array)
-                y_pred_class = np.argmax(y_pred_unseen['dense_5'], axis=1)[0]
-
-                return jsonify({'prediction': labels_fracture[y_pred_class]})
-            except Exception as e:
-                return jsonify({'error': str(e)}), 500
     
-    return render_template('xray.html', username=session.get('username'),h1_content='Brain Tumor',labels=model_lung)
+                        img = load_img(file_path, target_size=(224, 224))
+                        img_array = img_to_array(img)
+                        img_array = np.expand_dims(img_array, axis=0) 
+
+                        y_pred_unseen = model_brain.predict(img_array)
+                        y_pred_class = np.argmax(y_pred_unseen, axis=1)[0]
+
+                        return jsonify({'prediction': labels_tumor[y_pred_class]})
+            except Exception as e:
+                        return jsonify({'error': str(e)}), 500  
+    
+    return render_template('xray.html', username=session.get('username'),h1_content='Brain Tumor',labels=labels_tumor)
 
 
 
