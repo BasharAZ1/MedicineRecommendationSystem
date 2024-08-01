@@ -22,8 +22,7 @@ workout_collection = userdb['workout']
 precautions_collection = userdb['precautions']
 Description_collection = userdb['Description']
 medications_info_collection=userdb['medications_info']
-symptoms_collection = userdb['symptoms']
-diseases_collection=userdb['diseases']
+
 
 
 
