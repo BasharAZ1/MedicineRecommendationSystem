@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Symptoms</title>
+    <link rel="stylesheet" href="css/symptoms.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar-container">
+            <div class="burger-menu" id="burger-menu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <div>
+                <div class="greeting">Hello Dr. <span id="username"></span></div>
+            </div>
+            <div class="navbar-search-container">
+                <input type="text" id="navbar-search" placeholder="Enter medicine name">
+                <button id="search-button">FDA Search</button>
+                <div id="navbar-suggestions" class="suggestions"></div>
+            </div>
+            <a href="/api/logout" id="logout" class="logout">Logout</a>
+        </div>
+        <ul id="nav-links" class="nav-links">
+            <li><a href="/index">Home</a></li>
+            <li><a href="/symptoms">Diseases</a></li>
+            <li><a href="/xray_bone" >Bones</a></li>
+            <li><a href="/xray_lung">X-Ray</a></li>
+        </ul>
+    </nav>
+    <div class="title-container">
+        <h1 class="title"><span class="dark-blue">Kal</span> <span class="white">Medi</span></h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="box">
+                <h2>Select Symptoms</h2>
+                <div class="search-box">
+                    <input type="text" id="symptom-search" placeholder="Search for symptoms...">
+                    <ul id="symptom-list"></ul>
+                </div>
+            </div>
+            <div class="table-container">
+                <h2>Selected Symptoms</h2>
+                <table id="selected-symptoms-table">
+                    <thead>
+                        <tr>
+                            <th>Symptom</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Selected symptoms will be added here -->
+                    </tbody>
+                </table>
+                <form id="symptom-form">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('symptom-search');
+            const symptomList = document.getElementById('symptom-list');
+            const selectedSymptomsTable = document.getElementById('selected-symptoms-table').querySelector('tbody');
+            const symptomForm = document.getElementById('symptom-form');
+            let symptoms = [];
+
+            // Fetch symptoms from the server
+            fetch('/api/symptoms')
+                .then(response => response.json())
+                .then(data => {
+                    symptoms = data.symptoms;
+                })
+                .catch(error => console.error('Error fetching symptoms:', error));
+
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value.toLowerCase();
+                symptomList.innerHTML = '';
+                if (query) {
+                    const filteredSymptoms = symptoms.filter(symptom => symptom.toLowerCase().includes(query)).slice(0, 5);
+                    filteredSymptoms.forEach(symptom => {
+                        const li = document.createElement('li');
+                        li.textContent = symptom.replace(/_/g, ' ');
+                        li.addEventListener('click', () => selectSymptom(symptom));
+                        symptomList.appendChild(li);
+                    });
+                }
+            });
+
+            function selectSymptom(symptom) {
+                if (document.querySelector(`input[value="${symptom}"]`)) {
+                    return; // Prevent adding the same symptom more than once
+                }
+
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'symptoms';
+                input.value = symptom;
+                symptomForm.appendChild(input);
+
+                addSymptomToTable(symptom);
+            }
+
+            function addSymptomToTable(symptom) {
+                const row = document.createElement('tr');
+                const cellSymptom = document.createElement('td');
+                const cellAction = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+
+                cellSymptom.textContent = symptom.replace(/_/g, ' ');
+                deleteBtn.textContent = 'Remove';
+                deleteBtn.addEventListener('click', () => {
+                    row.remove();
+                    document.querySelector(`input[value="${symptom}"]`).remove();
+                });
+
+                cellAction.appendChild(deleteBtn);
+                row.appendChild(cellSymptom);
+                row.appendChild(cellAction);
+                selectedSymptomsTable.appendChild(row);
+            }
+
+            symptomForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const selectedSymptoms = Array.from(symptomForm.elements)
+                    .filter(el => el.name === 'symptoms')
+                    .map(el => el.value);
+
+                fetch('/api/submit_symptoms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ symptoms: selectedSymptoms })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('predictionResult', JSON.stringify(data));
+                    window.location.href = '/Disease';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting symptoms. Please try again.');
+                });
+            });
+        });
+    </script>
+    <script src="js/authentication.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/xray.js"></script>
+
+</body>
+</html>

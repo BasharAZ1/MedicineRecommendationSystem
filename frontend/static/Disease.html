@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Disease</title>
+    <link rel="stylesheet" href="css/Disease.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar-container">
+            <div class="burger-menu" id="burger-menu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <div>
+                <div class="greeting">Hello Dr. <span id="username"></span></div>
+            </div>
+            <div class="navbar-search-container">
+                <input type="text" id="navbar-search" placeholder="Enter medicine name">
+                <button id="search-button">FDA Search</button>
+                <div id="navbar-suggestions" class="suggestions"></div>
+            </div>
+            <a href="/api/logout" id="logout" class="logout">Logout</a>
+        </div>
+        <ul id="nav-links" class="nav-links">
+            <li><a href="/index">Home</a></li>
+            <li><a href="/symptoms">Diseases</a></li>
+            <li><a href="/xray_bone" >Bones</a></li>
+            <li><a href="/xray_lung">X-Ray</a></li>
+        </ul>
+    </nav>
+    <div class="title-container">
+        <h1 class="title"><span class="dark-blue">Kal</span> <span class="white">Medi</span></h1>
+    </div>
+    <div class="container">
+        <div class="box">
+            <h2>Predicted Disease</h2>
+            <div class="prediction-details">
+                <h3>Predicted disease:</h3>
+                <p id="predicted-disease"></p>
+            </div>
+        </div>
+        <div class="table-container">
+            <h2 id="bashar">Details</h2>
+            <div class="details-section">
+                <h3>Description</h3>
+                <p id="description"></p>
+            </div>
+            <div class="details-row">
+                <div class="details-section">
+                    <h3>Symptoms</h3>
+                    <ul id="symptoms-list"></ul>
+                </div>
+                <div class="details-section">
+                    <h3>Medications</h3>
+                    <ul id="medications-list"></ul>
+                </div>
+            </div>
+            <div class="details-row">
+                <div class="details-section">
+                    <h3>Diet</h3>
+                    <ul id="diet-list"></ul>
+                </div>
+                <div class="details-section">
+                    <h3>Precautions</h3>
+                    <ul id="precautions-list"></ul>
+                </div>
+            </div>
+            <div class="details-section">
+                <h3>Workout</h3>
+                <ul id="workout-list"></ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const result = JSON.parse(localStorage.getItem('predictionResult'));
+
+            if (!result) {
+                alert('No prediction result found.');
+                return;
+            }
+
+            document.getElementById('predicted-disease').textContent = result.predicted_disease;
+            document.getElementById('description').textContent = result.description;
+
+            const symptomsList = document.getElementById('symptoms-list');
+            result.symptoms.forEach(symptom => {
+                const li = document.createElement('li');
+                li.textContent = symptom.replace(/_/g, ' ');
+                symptomsList.appendChild(li);
+            });
+
+            const medicationsList = document.getElementById('medications-list');
+            result.medications.forEach(medication => {
+                const li = document.createElement('li');
+                li.textContent = medication;
+                medicationsList.appendChild(li);
+            });
+
+            const dietList = document.getElementById('diet-list');
+            result.diet.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                dietList.appendChild(li);
+            });
+
+            const precautionsList = document.getElementById('precautions-list');
+            result.precautions.forEach(precaution => {
+                const li = document.createElement('li');
+                li.textContent = precaution;
+                precautionsList.appendChild(li);
+            });
+
+            const workoutList = document.getElementById('workout-list');
+            result.workout.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                workoutList.appendChild(li);
+            });
+        });
+    </script>
+    <script src="js/navbar.js"></script>
+</body>
+</html>

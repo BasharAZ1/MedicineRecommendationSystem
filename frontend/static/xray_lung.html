@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chest X-Rays</title>
+    <link rel="stylesheet" href="css/xray.css">
+</head>
+<body>
+    <nav>
+        <div class="navbar-container">
+            <div class="burger-menu" id="burger-menu">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <div>
+                <div class="greeting">Hello Dr. <span id="username"></span></div>
+            </div>
+            <div class="navbar-search-container">
+                <input type="text" id="navbar-search" placeholder="Enter medicine name">
+                <button id="search-button">FDA Search</button>
+                <div id="navbar-suggestions" class="suggestions"></div>
+            </div>
+            <a href="/api/logout" id="logout" class="logout">Logout</a>
+        </div>
+        <ul id="nav-links" class="nav-links">
+            <li><a href="/index">Home</a></li>
+            <li><a href="/symptoms">Diseases</a></li>
+            <li><a href="/xray_bone" >Bones</a></li>
+            <li><a href="/xray_lung">X-Ray</a></li>
+        </ul>
+    </nav>
+    <div class="title-container">
+        <h1 class="title"><span class="dark-blue">Kal</span> <span class="white">Medi</span></h1>
+    </div>
+
+    <div class="container">
+        <h1 id="h1Content">Lung</h1> 
+        <input type="file" id="fileInput" accept="image/*">
+        <div id="imageDisplay"></div>
+        <button id="predictButton">Check</button>
+        <div id="predictionResult"></div>
+    </div>
+
+    <div id="feedbackSection">
+        <h2>Feedback</h2>
+        <label for="feedbackLabel">Select Label:</label>
+        <select id="feedbackLabel"></select>
+        <br>
+        <label for="feedbackText">Comments:</label>
+        <textarea id="feedbackText" rows="4" cols="50"></textarea>
+        <br>
+        <button id="submitFeedbackButton">Submit Feedback</button>
+    </div>
+    <script src="js/authentication.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/xray.js"></script>
+
+</body>
+</html>
