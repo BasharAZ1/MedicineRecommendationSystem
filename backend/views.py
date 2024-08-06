@@ -1,3 +1,4 @@
+
 from flask import jsonify, request, redirect, url_for
 from db import (
     get_medications_by_disease, get_diets_by_disease, get_workout_df_by_disease,
@@ -11,6 +12,23 @@ from bson.objectid import ObjectId
 import pandas as pd
 import ast
 import requests
+from confluent_kafka import Producer # Kafka Configuration 
+
+
+
+
+conf = {'bootstrap.servers': 'kafka:9092'}  # Kafka service name and port in Minikube
+producer = Producer(conf) 
+def delivery_report(err, msg): 
+    if err is not None: 
+        print(f"Message delivery failed: {err}")
+    else:
+        print(f"Message delivered to {msg.topic()} [{msg.partition()}]")
+        
+        
+def send_message(topic, message):
+    producer.produce(topic, message, callback=delivery_report) 
+    producer.flush()
 
 with open('models/svc_model.pkl', 'rb') as file:
     model = pickle.load(file)
@@ -189,6 +207,7 @@ def fda_search():
     
     drug_data = get_drug_info(query)
     if isinstance(drug_data, dict):
+        send_message('user-interactions', str("FDA"))
         important_info = extract_important_info(drug_data)
         return jsonify(important_info)
     else:

@@ -29,6 +29,9 @@ spec:
     spec:
       containers:
       - name: backend
-        image: basharalli/med_b:4
+        image: basharalli/backend_flask:2
         ports:
         - containerPort: 5005
+        env:
+        - name: KAFKA_BROKER
+          value: kafka:9092
