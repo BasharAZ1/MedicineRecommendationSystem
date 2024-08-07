@@ -2,7 +2,8 @@
 from flask import jsonify, request, redirect, url_for
 from db import (
     get_medications_by_disease, get_diets_by_disease, get_workout_df_by_disease,
-    get_precautions_by_disease, get_description_by_disease, medications_info_collection,get_user_by_username
+    get_precautions_by_disease, get_description_by_disease, medications_info_collection,get_user_by_username,
+    user_interactions_collection
 )
 import numpy as np
 import pickle
@@ -207,10 +208,19 @@ def fda_search():
     
     drug_data = get_drug_info(query)
     if isinstance(drug_data, dict):
-        send_message('user-interactions', str("FDA"))
+        send_message('user-interactions', str(query))
         important_info = extract_important_info(drug_data)
         return jsonify(important_info)
     else:
         return jsonify({"error": drug_data}), 404
 
 
+def write_drug_search():
+    data = request.json
+    if not data or "message" not in data:
+            return jsonify({"error": "Invalid input"}), 400
+    try:
+            user_interactions_collection.insert_one({"message": data["message"]})
+            return jsonify({"status": "success"}), 200
+    except Exception as e:
+            return jsonify({"error": str(e)}), 500

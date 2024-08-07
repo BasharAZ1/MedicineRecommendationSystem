@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: consumer-service
-          image: basharalli/consumers:1 
+          image: basharalli/consumers:4
           env:
             - name: KAFKA_BROKER
               value: kafka:9092
