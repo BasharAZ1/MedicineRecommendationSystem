@@ -1,7 +1,7 @@
 # backend/urls.py
 from views import (
     symptoms, submit_symptoms, searchmedicine, 
-    search, get_medicine_info, fda_search,write_interactions
+    search, get_medicine_info, fda_search,write_interactions,drugs_data_fetch
 )
 from x_ray import lung_page, bones_page, submitfeedback,getlunglables,getBonelables
 from authentication import register, login, logout,session_fet
@@ -23,3 +23,4 @@ def configure_routes(app):
     app.add_url_rule('/Lung-get-labels', 'lung-get-labels', getlunglables, methods=["GET"])
     app.add_url_rule('/Bones-get-labels', 'Bones-get-labels', getBonelables, methods=["GET"])
     app.add_url_rule('/write_interactions', 'write_interactions', write_interactions, methods=["POST"])
+    app.add_url_rule('/drugs_data_fetch', 'drugs_data_fetch', drugs_data_fetch, methods=["GET"])

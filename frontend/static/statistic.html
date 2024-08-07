@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chest X-Rays</title>
-    <link rel="stylesheet" href="css/xray.css">
+    <title>Searched Drugs Graph</title>
+    <link rel="stylesheet" href="css/statistic.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <nav>
+
+        <nav>
         <div class="navbar-container">
             <div class="burger-menu" id="burger-menu">
                 <div class="bar"></div>
@@ -29,34 +31,16 @@
             <li><a href="/symptoms">Diseases</a></li>
             <li><a href="/xray_bone" >Bones</a></li>
             <li><a href="/xray_lung">X-Ray</a></li>
-            <li><a href="/statistic">X-statistic</a></li>
+            <li><a href="/statistic">statistic</a></li>
         </ul>
     </nav>
-    <div class="title-container">
-        <h1 class="title"><span class="dark-blue">Kal</span> <span class="white">Medi</span></h1>
-    </div>
-
     <div class="container">
-        <h1 id="h1Content">Lung</h1> 
-        <input type="file" id="fileInput" accept="image/*">
-        <div id="imageDisplay"></div>
-        <button id="predictButton">Check</button>
-        <div id="predictionResult"></div>
-    </div>
-
-    <div id="feedbackSection">
-        <h2>Feedback</h2>
-        <label for="feedbackLabel">Select Label:</label>
-        <select id="feedbackLabel"></select>
-        <br>
-        <label for="feedbackText">Comments:</label>
-        <textarea id="feedbackText" rows="4" cols="50"></textarea>
-        <br>
-        <button id="submitFeedbackButton">Submit Feedback</button>
+        <h1>Searched Drugs Graph</h1>
+        <canvas id="myChart"></canvas>
     </div>
     <script src="js/authentication.js"></script>
     <script src="js/navbar.js"></script>
     <script src="js/xray.js"></script>
-
+    <script src="js/statistic.js"></script>
 </body>
 </html>

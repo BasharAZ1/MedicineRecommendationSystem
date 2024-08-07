@@ -1,6 +1,6 @@
-from db import add_user, find_user_by_username, check_user_password, users_collection, user_from_dict
-from flask_login import login_user, logout_user, login_required,current_user
-from flask import jsonify, request, redirect, flash, session, url_for, get_flashed_messages
+from db import add_user, find_user_by_username, check_user_password, user_from_dict
+from flask_login import login_user, logout_user, login_required
+from flask import jsonify, request, session, get_flashed_messages
 from models import User
 from views import send_message
 

@@ -83,6 +83,8 @@ def get_precautions_by_disease(disease):
     else:
         return None
     
+    
+    
 def get_description_by_disease(disease):
     result = Description_collection.find_one({"Disease": disease})
     if result:
