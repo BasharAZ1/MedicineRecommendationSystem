@@ -3,7 +3,7 @@ from flask import jsonify, request, redirect, url_for
 from db import (
     get_medications_by_disease, get_diets_by_disease, get_workout_df_by_disease,
     get_precautions_by_disease, get_description_by_disease, medications_info_collection,get_user_by_username,
-    user_interactions_collection
+    userdb
 )
 import numpy as np
 import pickle
@@ -208,19 +208,30 @@ def fda_search():
     
     drug_data = get_drug_info(query)
     if isinstance(drug_data, dict):
-        send_message('user-interactions', str(query))
+        send_message('drug', str(query))
         important_info = extract_important_info(drug_data)
         return jsonify(important_info)
     else:
         return jsonify({"error": drug_data}), 404
 
 
-def write_drug_search():
+def write_interactions():
     data = request.json
-    if not data or "message" not in data:
-            return jsonify({"error": "Invalid input"}), 400
+    if not data or "message" not in data or "topic" not in data:
+        return jsonify({"error": "Invalid input"}), 400
+    
+    topic = data["topic"]
+    message = data["message"]
+    
     try:
-            user_interactions_collection.insert_one({"message": data["message"]})
-            return jsonify({"status": "success"}), 200
+        collection_name = topic + "_interactions"
+        
+        # Check if the collection exists, if not, create it
+        if collection_name not in userdb.list_collection_names():
+            userdb.create_collection(collection_name)
+        
+        collection = userdb[collection_name]
+        collection.insert_one({"message": message})
+        return jsonify({"status": "success"}), 200
     except Exception as e:
-            return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500

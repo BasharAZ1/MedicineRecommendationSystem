@@ -2,6 +2,7 @@ from db import add_user, find_user_by_username, check_user_password, users_colle
 from flask_login import login_user, logout_user, login_required,current_user
 from flask import jsonify, request, redirect, flash, session, url_for, get_flashed_messages
 from models import User
+from views import send_message
 
 @login_required
 def logout():
@@ -24,6 +25,7 @@ def login():
             session['user_id'] = str(user._id)
             session['is_logged_in'] = True
             login_user(user)
+            send_message('login', str({username}))
             return jsonify({"message": "Login successful", "user_id": str(user._id)}), 200
         else:
             return jsonify({"error": "Invalid username or password"}), 401

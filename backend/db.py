@@ -22,9 +22,9 @@ workout_collection = userdb['workout']
 precautions_collection = userdb['precautions']
 Description_collection = userdb['Description']
 medications_info_collection=userdb['medications_info']
-user_interactions_collection=userdb['user_interactions']
-
-
+login_interactions_collection=userdb['login_interactions']
+drug_interactions_collection=userdb['drug_interactions']
+print(userdb.list_collection_names())
 
 
 
