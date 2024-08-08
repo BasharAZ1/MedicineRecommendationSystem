@@ -5,64 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/auth.css">
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                let messages = document.querySelector('.flash-messages');
-                if (messages) {
-                    messages.style.transition = 'opacity 0.5s ease';
-                    messages.style.opacity = '0';
-                    setTimeout(function() {
-                        messages.remove();
-                    }, 500);
-                }
-            }, 3000); 
-
-            document.querySelector('form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const username = document.querySelector('input[name="username"]').value;
-                const password = document.querySelector('input[name="password"]').value;
-
-                fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        window.location.href = '/index';
-                    } else {
-                        displayFlashMessage(data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    displayFlashMessage('An error occurred. Please try again.');
-                });
-            });
-
-            function displayFlashMessage(message) {
-                const flashMessagesContainer = document.createElement('div');
-                flashMessagesContainer.classList.add('flash-messages');
-                const alert = document.createElement('div');
-                alert.classList.add('alert');
-                alert.textContent = message;
-                flashMessagesContainer.appendChild(alert);
-                document.querySelector('.login-container').appendChild(flashMessagesContainer);
-
-                setTimeout(function() {
-                    flashMessagesContainer.style.transition = 'opacity 0.5s ease';
-                    flashMessagesContainer.style.opacity = '0';
-                    setTimeout(function() {
-                        flashMessagesContainer.remove();
-                    }, 500);
-                }, 3000);
-            }
-        });
-    </script>
 </head>
 <body>
     <div class="title-container">
@@ -71,7 +13,7 @@
     <div class="login-container">
         <div class="login-box">
             <h2>Login</h2>
-            <form>
+            <form data-form-type="login">
                 <div class="input-box">
                     <input type="text" name="username" required>
                     <label>Username</label>
@@ -85,5 +27,6 @@
             </form>
         </div>
     </div>
+    <script src="js/auth.js"></script>
 </body>
 </html>
