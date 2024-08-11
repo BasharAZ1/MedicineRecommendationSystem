@@ -29,6 +29,6 @@ spec:
     spec:
       containers:
       - name: chat
-        image: basharalli/chat_med:1.2
+        image: basharalli/chat_med:1.4
         ports:
         - containerPort: 5000

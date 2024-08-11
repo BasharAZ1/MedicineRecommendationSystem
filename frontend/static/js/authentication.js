@@ -11,12 +11,11 @@ fetch('/api/session')
             usernameElement.textContent = data.username;
             if (isAuthPage) {
 
-                window.location.href = '/index';  // Replace with your index page URL
+                window.location.href = '/index';  
             }
         } else {
-            // Redirect to login page if not logged in and on an auth page
             if (!isAuthPage) {
-                window.location.href = '/login';  // Replace with the login page URL
+                window.location.href = '/login';  
             }
         }
     })

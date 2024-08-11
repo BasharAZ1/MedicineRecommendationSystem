@@ -8,7 +8,8 @@ app = Flask(__name__)
 
 
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SESSION_COOKIE_NAME'] = 'session_app2'
 Session(app)
 
 load_dotenv()
@@ -25,13 +26,12 @@ def chat():
     
     user_input = request.json.get('prompt')
     
-    # Append the user message to the conversation context
     session['conversation_context'].append({"role": "user", "content": user_input})
 
     response = openai.ChatCompletion.create(
         model="gpt-4o",  
         messages=session['conversation_context'],
-        max_tokens=250,
+        max_tokens=500,
         temperature=0.5
     )
 
@@ -49,6 +49,9 @@ def chat():
 def reset():
     session['conversation_context'] = [{"role": "system", "content": "You are a helpful assistant."}]
     return jsonify({"message": "Conversation context reset."})
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
