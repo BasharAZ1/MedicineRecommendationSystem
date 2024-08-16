@@ -5,7 +5,7 @@ from db import (
     get_precautions_by_disease, get_description_by_disease, medications_info_collection,
     userdb
 )
-from models import symptoms_dict,diseases_dict,model,producer,delivery_report
+from models import symptoms_list,diseases_dict,model,producer,delivery_report
 import numpy as np
 
 from flask_login import login_required
@@ -41,7 +41,7 @@ def flatten(nested_list):
 
 @login_required
 def symptoms():
-    symptoms_list = list(symptoms_dict.keys())
+    #symptoms_list = list(symptoms_dict.keys())
     return jsonify(symptoms=symptoms_list)
 
 
@@ -60,7 +60,7 @@ def submit_symptoms():
         if not prediction:
             return jsonify({"error": "Prediction failed"}), 500
 
-        disease = prediction[0]
+        disease = prediction
         diets = get_diets_by_disease(disease)
         medications = get_medications_by_disease(disease)
         workout = get_workout_df_by_disease(disease)
@@ -96,21 +96,41 @@ def remove_nan_values(data):
         return data
 
 def predict_disease(symptoms):
-    num_features = 132
+    num_features =133
     feature_vector = [0] * num_features
+
     for symptom in symptoms:
-        if symptom in symptoms_dict:
-            feature_vector[symptoms_dict[symptom]] = 1  
-    feature_vector_df = pd.DataFrame([feature_vector], columns=symptoms_dict.keys())
-    
-    x = model.predict(feature_vector_df)
+        if symptom in symptoms_list:
+            # Find the index of the symptom in the symptoms_list and set the corresponding element in feature_vector to 1
+            feature_vector[symptoms_list.index(symptom)] = 1
+
+    x = model.predict([feature_vector])
+    print(x)
+    print(x[0])
 
     if x[0] in diseases_dict:
         x_disease = diseases_dict[x[0]]
+    elif x[0] in diseases_dict.values():
+        x_disease = x[0]
     else:
         x_disease = x[0]
+    x_disease = adjust_prediction(x_disease, diseases_dict)
+    return  x_disease
+    # num_features = 132
+    # feature_vector = [0] * num_features
+    # for symptom in symptoms:
+    #     if symptom in symptoms_dict:
+    #         feature_vector[symptoms_dict[symptom]] = 1  
+    # feature_vector_df = pd.DataFrame([feature_vector], columns=symptoms_dict.keys())
     
-    return x_disease, x[0]
+    # x = model.predict(feature_vector_df)
+
+    # if x[0] in diseases_dict:
+    #     x_disease = diseases_dict[x[0]]
+    # else:
+    #     x_disease = x[0]
+    
+    # return x_disease, x[0]
 
 @login_required
 def searchmedicine():
@@ -232,3 +252,12 @@ def drugs_data_fetch():
         else:
             searched_drugs[drug] = 1
     return jsonify(searched_drugs)
+
+def adjust_prediction(prediction, diseases_dict):
+
+    adjusted_names = {v.replace(' ', '').lower(): v for v in diseases_dict.values()}
+    
+
+    adjusted_prediction = adjusted_names.get(prediction.replace(' ', '').lower(), prediction)
+    
+    return adjusted_prediction

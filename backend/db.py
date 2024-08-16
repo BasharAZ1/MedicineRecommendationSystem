@@ -81,7 +81,7 @@ def get_precautions_by_disease(disease):
     if result:
         return [result.get('Precaution_1'), result.get('Precaution_2'), result.get('Precaution_3'), result.get('Precaution_4')]
     else:
-        return None
+        return ['not available right now']
     
     
     
@@ -90,7 +90,7 @@ def get_description_by_disease(disease):
     if result:
         return result.get("Description")
     else:
-        return "Not found"
+        return ['not available right now']
 
 
 

@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: basharalli/backend_flask:2.6
+        image: basharalli/backend_flask:2.15
         ports:
         - containerPort: 5005
         env:

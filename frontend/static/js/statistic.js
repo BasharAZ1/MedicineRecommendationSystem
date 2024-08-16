@@ -16,8 +16,8 @@ function fetchDataAndRenderChart() {
                     datasets: [{
                         label: '# of Searches',
                         data: values,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Change to a different color
+                        borderColor: 'rgba(255, 99, 132, 1)', // Change to a different color
                         borderWidth: 1
                     }]
                 },

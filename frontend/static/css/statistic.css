@@ -16,132 +16,18 @@ body {
     width: 100%;
 }
 
-.title-container {
-    margin-top: 80px;
-    text-align: center;
-}
-
-.title {
-    font-size: 50px;
-}
-
-.title .dark-blue {
-    color: #1a73e8;
-}
-
-.title .white {
-    color: #ffffff;
-}
-
 .container {
-    width: 100%;
-    max-width: 1000px;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-.row {
-    display: flex;
-    gap: 20px;
-}
-
-.box, .table-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-    color: #1a73e8;
-    flex: 1;
-}
-
-.box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.table-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.box h2, .table-container h2 {
-    margin-bottom: 20px;
-}
-
-.table-container table {
-    width: 100%;
-    border-collapse: collapse;
-    color: #1a73e8;
-    margin-bottom: 20px;
-}
-
-.table-container th, .table-container td {
-    border: 1px solid #1a73e8;
-    padding: 10px;
-    text-align: left;
-}
-
-.table-container th {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.table-container td {
-    background: rgba(255, 255, 255, 0.9);
-}
-
-button {
-    background: #1a73e8;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #fff;
-    transition: background 0.3s ease, transform 0.3s ease;
-    align-self: center;
-}
-
-button:hover {
-    background: #1669c1;
-    transform: scale(1.05);
-}
-
-.search-box {
-    margin-bottom: 20px;
     width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 120px; /* Ensure the content starts below the navbar */
 }
 
-#symptom-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+canvas {
+    max-width: 100%;
+    height: 400px;
 }
 
-#symptom-list li {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 5px;
-    margin: 5px 0;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #1a73e8;
-}
-
-#symptom-list li:hover {
-    background: rgba(230, 243, 255, 1);
-}
-
-input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #1a73e8;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #1a73e8;
-    outline: none;
-}
 /* Navbar styles */
 nav {
     background: rgba(255, 255, 255, 0.9);
@@ -295,20 +181,10 @@ nav {
     justify-content: space-between;
     height: 100%;
 }
+
 .greeting {
     font-size: 1.2em;
     color: #1a73e8;
     margin-right: 20px;
     margin-left: 80px;
-}
-
-.container {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-canvas {
-    max-width: 100%;
-    height: 400px;
 }

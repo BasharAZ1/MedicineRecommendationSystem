@@ -4,6 +4,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
+    text-align: center;
 }
 
 body {
@@ -15,6 +16,13 @@ body {
     margin: 0;
 }
 
+.title .dark-blue {
+    color: #1a73e8;
+}
+
+.title .white {
+    color: #ffffff;
+}
 #navbar {
     width: 100%;
 }
@@ -227,18 +235,39 @@ nav {
     margin-left: 80px;
 }
 
+/* Content container to hold main content under the navbar */
+.content-container {
+    margin-top: 80px; /* Adjust margin to ensure content starts below the navbar */
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Med Chat Title */
+.med-chat-title {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.med-chat-title h2 {
+    font-size: 36px;
+    color: #1a73e8;
+    margin-bottom: 20px;
+}
+
 /* Chat styles */
 .chat-container {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    width: 600px; /* Increased width */
     padding: 20px;
-    margin-top: 100px; /* Adjust to account for fixed navbar */
+    margin-top: 50px; /* Adjust to account for fixed navbar */
+    margin: auto;
 }
 
 #chatbox {
-    height: 300px;
+    height: 400px; /* Increased height */
     overflow-y: scroll;
     border: 1px solid #ccc;
     padding: 10px;
@@ -246,7 +275,7 @@ nav {
 }
 
 #user-input {
-    width: calc(100% - 70px);
+    width: calc(100% - 80px); /* Adjusted to accommodate larger width */
     padding: 10px;
 }
 

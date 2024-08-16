@@ -27,19 +27,32 @@
         <ul id="nav-links" class="nav-links">
             <li><a href="/index">Home</a></li>
             <li><a href="/symptoms">Diseases</a></li>
-            <li><a href="/xray_bone" >Bones</a></li>
+            <li><a href="/xray_bone">Bones</a></li>
             <li><a href="/xray_lung">X-Ray</a></li>
             <li><a href="/statistic">Statistic</a></li>
             <li><a href="/chat_app">Chat</a></li>
         </ul>
     </nav>
-    <div class="chat-container">
-        <div id="chatbox">
-            <!-- Chat messages will appear here -->
+
+    <!-- Container for the main content under the navbar -->
+    <div class="content-container">
+        <div class="title-container">
+            <h1 class="title"><span class="dark-blue">Kal</span> <span class="white">Medi</span></h1>
         </div>
-        <input type="text" id="user-input" placeholder="Type your message...">
-        <button onclick="sendMessage()">Send</button>
-        <button onclick="resetChat()">Reset</button>
+
+        <!-- Added Title -->
+        <div class="med-chat-title">
+            <h2>Med Chat</h2>
+        </div>
+
+        <div class="chat-container">
+            <div id="chatbox">
+                <!-- Chat messages will appear here -->
+            </div>
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+            <button onclick="resetChat()">Reset</button>
+        </div>
     </div>
 
     <script src="js/chat.js"></script>

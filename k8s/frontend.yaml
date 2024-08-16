@@ -30,6 +30,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: basharalli/frontend_ngnix:1.6
+          image: basharalli/frontend_ngnix:1.10
           ports:
             - containerPort: 80

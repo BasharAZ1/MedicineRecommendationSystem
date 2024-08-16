@@ -40,26 +40,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function hideFlashMessages() {
-        let messages = document.querySelector('.flash-messages');
-        if (messages) {
-            messages.style.transition = 'opacity 0.5s ease';
-            messages.style.opacity = '0';
-            setTimeout(function() {
-                messages.remove();
-            }, 500);
-        }
-    }
-
     function displayFlashMessage(message) {
-        const flashMessagesContainer = document.createElement('div');
-        flashMessagesContainer.classList.add('flash-messages');
+        const flashMessagesContainer = document.querySelector('.flash-message-container');
+        flashMessagesContainer.innerHTML = ''; // Clear previous messages
         const alert = document.createElement('div');
         alert.classList.add('alert');
         alert.textContent = message;
         flashMessagesContainer.appendChild(alert);
-        document.querySelector('.login-container').appendChild(flashMessagesContainer);
-
-        setTimeout(hideFlashMessages, 3000);
+    
+        setTimeout(hideFlashMessages, 60000);
     }
+    
+    function hideFlashMessages() {
+        let messages = document.querySelector('.flash-message-container');
+        if (messages) {
+            setTimeout(function() {
+                messages.innerHTML = ''; // Remove all messages
+            }, 500);
+        }
+    }
+    
 });
